@@ -1,4 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raise Concern to JMI Authorities</title>
+<style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f0f4ff, #e8ecf9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        max-width: 750px;
+        width: 100%;
+    }
+    h1 {
+        color: #1a237e;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+    }
+    .input-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        transition: border 0.2s;
+    }
+    input:focus, textarea:focus {
+        border-color: #3f51b5;
+        outline: none;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    button {
+        background: #3f51b5;
+        color: #fff;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        font-size: 17px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        transition: background 0.3s;
+        margin-top: 10px;
+    }
+    button:hover { background: #2c3e9f; }
+    .footer {
+        font-size: 12px;
+        color: #555;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .preview-box {
+        margin-top: 25px;
+        padding: 18px;
+        border-radius: 10px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        white-space: pre-wrap;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        color: #222;
+        max-height: 350px;
+        overflow-y: auto;
+    }
+    .preview-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #1a237e;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Raise Concern to JMI Authorities</h1>
+    
+    <div class="input-group">
+        <label for="name">Your Name *</label>
+        <input type="text" id="name" placeholder="e.g. Mohd Kashif Ansari" required oninput="updatePreview()" />
+    </div>
+    
+    <div class="input-group">
+        <label for="rollNo">Roll Number *</label>
+        <input type="text" id="rollNo" placeholder="e.g. D23BA0126" required oninput="updatePreview()" />
+    </div>
+    
+    <div class="input-group">
+        <label for="enrollmentNo">Enrollment Number *</label>
+        <input type="text" id="enrollmentNo" placeholder="e.g. 23-5116" required oninput="updatePreview()" />
+    </div>
+    
+    <div class="input-group">
+        <label for="extraMessage">Additional Message (optional)</label>
+        <textarea id="extraMessage" placeholder="Write any additional point you want to add..." oninput="updatePreview()"></textarea>
+    </div>
+    
+    <button onclick="sendEmail()">Generate Concern Email</button>
+
+    <div class="preview-box" id="preview">
+        <div class="preview-title">📩 Live Email Preview</div>
+        <div id="previewContent">(Fill details above to see preview here)</div>
+    </div>
+    
+    <div class="footer">
+        Clicking the button will open your default mail app (Gmail/Outlook) with a pre-filled draft. <br>
+        Please review once before sending.
+    </div>
+</div>
+
 <script>
+function buildBody(name, rollNo, enrollmentNo, extraMessage) {
+    return `Respected Sir/Madam,
+
+My name is ${name || "[Your Name]"}, Roll No: ${rollNo || "[Roll No]"}, Enrollment No: ${enrollmentNo || "[Enrollment No]"}.
+
+I am writing to highlight some serious concerns regarding the academic experience in JMI CDOE (Aug-Sep 2023 batch):
+
+1. Offline Classes Not Conducted:
+I opted for the offline mode expecting proper counseling and face-to-face classes. However, even after two years and exams, not a single offline session has been conducted, which has caused academic disadvantage.
+
+2. Delay and Incomplete Study Materials (SLM):
+The SLM was delivered very late, often just before the examinations. In several cases, students did not even receive complete materials, leading to confusion and difficulties in preparation.
+
+3. Poor Communication and Academic Support:
+There has been a lack of timely updates and a clear academic calendar. The first year was unnecessarily extended, while the second year was rushed. Queries remain unanswered, leaving students stressed and uncertain.
+
+In order to avoid similar issues in the final year, I request:
+• Offline classes should be conducted as promised.  
+• SLM must be provided promptly upon admission/fee payment.  
+• An official academic calendar with clear deadlines should be shared.  
+• A proper support system must be established for academic queries.  
+
+${extraMessage ? "Additional Note: " + extraMessage + "\n\n" : ""}Thank you for your kind attention to this matter.
+
+Sincerely,  
+${name || "[Your Name]"}`;
+}
+
+function updatePreview() {
+    const name = document.getElementById('name').value.trim();
+    const rollNo = document.getElementById('rollNo').value.trim();
+    const enrollmentNo = document.getElementById('enrollmentNo').value.trim();
+    const extraMessage = document.getElementById('extraMessage').value.trim();
+
+    document.getElementById('previewContent').textContent = buildBody(name, rollNo, enrollmentNo, extraMessage);
+}
+
 function sendEmail() {
     const name = document.getElementById('name').value.trim();
     const rollNo = document.getElementById('rollNo').value.trim();
@@ -6,45 +175,17 @@ function sendEmail() {
     const extraMessage = document.getElementById('extraMessage').value.trim();
 
     if (!name || !rollNo || !enrollmentNo) {
-        alert("Please fill in Name, Roll No, and Enrollment No.");
+        alert("⚠️ Please fill in Name, Roll No, and Enrollment No.");
         return;
     }
 
     const subject = "Concern Regarding JMI CDOE Academic Experience";
+    const body = buildBody(name, rollNo, enrollmentNo, extraMessage);
 
-    // build body string in plain text (NO encoding here)
-    let body = 
-`Respected Sir/Madam,
-
-My name is ${name}, Roll No: ${rollNo}, Enrollment No: ${enrollmentNo}.
-
-I am writing to highlight serious issues faced during my academic experience at JMI CDOE (Aug-Sep 2023 batch):
-
-1. Offline Classes Not Conducted:
-I opted for offline mode expecting proper counseling and face-to-face classes. However, even after 2 years and exams, not a single offline session was held, causing academic disadvantage.
-
-2. Late and Incomplete Study Materials (SLM):
-SLM was delivered very late, often just before exams. Some students did not receive full materials, creating confusion and impacting preparation.
-
-3. Poor Communication and Academic Support:
-No timely updates, unclear academic calendar, first year extended unnecessarily, second year rushed. Lack of response to queries has left students stressed and uncertain.
-
-Demands to avoid these issues in final year:
-• Conduct offline classes as promised.
-• Provide SLM promptly upon admission/fee payment.
-• Share official academic calendar and deadlines.
-• Ensure support system for academic queries.
-
-Additional Message: ${extraMessage}
-
-Thank you for your attention.
-
-Regards,  
-${name}`;
-
-    // Now encode the WHOLE body once (to preserve spaces/newlines properly)
     const mailtoLink = `mailto:mhaque4@jmi.ac.in,vc@jmi.ac.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
     window.location.href = mailtoLink;
 }
 </script>
+
+</body>
+</html>
