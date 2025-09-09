@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JMI CDOE Student Concern Mail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Send Your Concern to JMI Authorities</h2>
+    <p>Please fill in your details below and click the button to open your email app with a pre-filled message.</p>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="text" id="rollNo" placeholder="Your Roll No." required />
+    <input type="text" id="enrollmentNo" placeholder="Your Enrollment No." required />
+    <textarea id="customMessage" rows="6" placeholder="You can add any extra message here (optional)"></textarea>
+    <button onclick="sendEmail()">Send My Concern</button>
+
+    <script>
+        function sendEmail() {
+            const name = encodeURIComponent(document.getElementById('name').value.trim());
+            const rollNo = encodeURIComponent(document.getElementById('rollNo').value.trim());
+            const enrollmentNo = encodeURIComponent(document.getElementById('enrollmentNo').value.trim());
+            const extraMessage = encodeURIComponent(document.getElementById('customMessage').value.trim());
+
+            const subject = encodeURIComponent('Concern Regarding My JMI CDOE Admission Experience');
+
+            const body = `Respected Sir/Madam,%0A%0A` +
+                `My name is ${name}. My Roll No. is ${rollNo} and Enrollment No. is ${enrollmentNo}.%0A%0A` +
+                `I would like to share some difficulties I am facing regarding my academic experience:%0A%0A` +
+                `1. I opted for offline mode but there was no offline class throughout the course.%0A%0A` +
+                `2. The Self Learning Material (SLM) was delivered late and incompletely.%0A%0A` +
+                `3. Lack of academic calendar and communication.%0A%0A` +
+                `Additional message: ${extraMessage}%0A%0A` +
+                `I hope my concern will be addressed as soon as possible.%0A%0AThank you.`;
+
+            window.location.href = `mailto:mhaque4@jmi.ac.in,vc@jmi.ac.in?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
