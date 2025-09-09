@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Concern Email to JMI Authorities</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+h1 { color: #333; margin-bottom: 20px; }
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+textarea { resize: vertical; }
+button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+}
+button:hover { background-color: #0056b3; }
+.footer { font-size: 12px; color: #666; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Send Concern to JMI Authorities</h1>
+<input type="text" id="name" placeholder="Your Name" required />
+<input type="text" id="rollNo" placeholder="Your Roll No." required />
+<input type="text" id="enrollmentNo" placeholder="Your Enrollment No." required />
+<textarea id="extraMessage" rows="3" placeholder="Additional message (optional)"></textarea>
+<button onclick="sendEmail()">Send My Concern</button>
+<div class="footer">
+Clicking the button will open Gmail/Outlook with a pre-filled mail. Edit if needed and Send.
+</div>
+</div>
+
+<script>
+function sendEmail() {
+    const name = encodeURIComponent(document.getElementById('name').value.trim());
+    const rollNo = encodeURIComponent(document.getElementById('rollNo').value.trim());
+    const enrollmentNo = encodeURIComponent(document.getElementById('enrollmentNo').value.trim());
+    const extraMessage = encodeURIComponent(document.getElementById('extraMessage').value.trim());
+
+    const subject = encodeURIComponent("Concern Regarding JMI CDOE Academic Experience");
+
+    // Maximum detail within mailto safe limit (~2000-2200 chars)
+    const body = encodeURIComponent(
+`Respected Sir/Madam,
+
+My name is ${name}, Roll No: ${rollNo}, Enrollment No: ${enrollmentNo}.
+
+I am writing to highlight serious issues faced during my academic experience at JMI CDOE (Aug-Sep 2023 batch):
+
+1. Offline Classes Not Conducted:
+I opted for offline mode expecting proper counseling and face-to-face classes. However, even after 2 years and exams, not a single offline session was held, causing academic disadvantage.
+
+2. Late and Incomplete Study Materials (SLM):
+SLM was delivered very late, often just before exams. Some students did not receive full materials, creating confusion and impacting preparation.
+
+3. Poor Communication and Academic Support:
+No timely updates, unclear academic calendar, first year extended unnecessarily, second year rushed. Lack of response to queries has left students stressed and uncertain.
+
+Demands to avoid these issues in final year:
+• Conduct offline classes as promised.
+• Provide SLM promptly upon admission/fee payment.
+• Share official academic calendar and deadlines.
+• Ensure support system for academic queries.
+
+Additional Message: ${extraMessage}
+
+Thank you for your attention.
+[Your Name]`
+    );
+
+    window.location.href = `mailto:mhaque4@jmi.ac.in,vc@jmi.ac.in?subject=${subject}&body=${body}`;
+}
+</script>
+
+</body>
+</html>
