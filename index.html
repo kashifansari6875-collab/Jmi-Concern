@@ -64,15 +64,19 @@ Clicking the button will open Gmail/Outlook with a pre-filled mail. Edit if need
 
 <script>
 function sendEmail() {
-    const name = encodeURIComponent(document.getElementById('name').value.trim());
-    const rollNo = encodeURIComponent(document.getElementById('rollNo').value.trim());
-    const enrollmentNo = encodeURIComponent(document.getElementById('enrollmentNo').value.trim());
-    const extraMessage = encodeURIComponent(document.getElementById('extraMessage').value.trim());
+    const name = document.getElementById('name').value.trim();
+    const rollNo = document.getElementById('rollNo').value.trim();
+    const enrollmentNo = document.getElementById('enrollmentNo').value.trim();
+    const extraMessage = document.getElementById('extraMessage').value.trim();
 
-    const subject = encodeURIComponent("Concern Regarding JMI CDOE Academic Experience");
+    if (!name || !rollNo || !enrollmentNo) {
+        alert("Please fill in Name, Roll No, and Enrollment No.");
+        return;
+    }
 
-    // Maximum detail within mailto safe limit (~2000-2200 chars)
-    const body = encodeURIComponent(
+    const subject = "Concern Regarding JMI CDOE Academic Experience";
+
+    const body = 
 `Respected Sir/Madam,
 
 My name is ${name}, Roll No: ${rollNo}, Enrollment No: ${enrollmentNo}.
@@ -97,10 +101,14 @@ Demands to avoid these issues in final year:
 Additional Message: ${extraMessage}
 
 Thank you for your attention.
-[Your Name]`
-    );
 
-    window.location.href = `mailto:mhaque4@jmi.ac.in,vc@jmi.ac.in?subject=${subject}&body=${body}`;
+Regards,  
+${name}`;
+
+    // Encode ONLY the body and subject
+    const mailtoLink = `mailto:mhaque4@jmi.ac.in,vc@jmi.ac.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoLink;
 }
 </script>
 
